@@ -1,0 +1,42 @@
+{
+  "battleType": 2,
+  "mode": 201,
+  "stage": 1,
+  "fighter": [
+    {
+      "inviteCode": 141123,
+      "result": 1,
+      "actor": [
+        {
+          "actorId": 2002,
+          "goal": 5,
+          "score": 10,
+          "eventMap": {
+            "10": 1,
+            "15": 5,
+            "29": 1,
+            "5": 1
+          }
+        }
+      ]
+    },
+    {
+      "inviteCode": 140780,
+      "actor": [
+        {
+          "actorId": 2002,
+          "goal": 6,
+          "score": 12,
+          "steal": 1,
+          "eventMap": {
+            "15": 5,
+            "3": 1,
+            "5": 2
+          }
+        }
+      ]
+    }
+  ],
+  "fightIdStr": "gs-76w8w-fn592-165068_1639187214_1",
+  "useMineCourt": true
+}

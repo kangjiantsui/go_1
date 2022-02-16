@@ -1,0 +1,51 @@
+{
+  "title": "设置球员预告信息",
+  "type": "object",
+  "options": {
+    "disable_collapse": true,
+    "expand_height": true,
+    "disable_edit_json": true
+  },
+  "properties": {
+    "id": {
+      "type": "integer",
+      "default": "",
+      "description": "id"
+    },
+    "channel": {
+      "type": "string",
+      "default": "",
+      "description": "渠道"
+    },
+    "templateId": {
+      "type": "integer",
+      "default": 0,
+      "description": "模板id"
+    },
+    "clientPictureAddress": {
+      "type": "string",
+      "default": "",
+      "description": "图片客户端地址"
+    },
+    "beginTime": {
+      "type": "integer",
+      "default": 0,
+      "description": "开始时间戳"
+    },
+    "endTime": {
+      "type": "integer",
+      "default": 0,
+      "description": "结束时间戳"
+    },
+    "popUps": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否弹窗"
+    },
+    "title": {
+      "type": "string",
+      "default": "",
+      "description": "页签标题"
+    }
+  }
+}

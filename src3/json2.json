@@ -1,0 +1,403 @@
+{
+  "actor": {
+    "1001": {
+      "actorId": 1001,
+      "level": 1,
+      "cup": 106,
+      "proficiency": 344,
+      "maxCup": 110,
+      "createAt": 1634602946,
+      "skin": 1001101,
+      "collocation": {
+        "1": 101,
+        "2": 210,
+        "3": 311,
+        "4": 401
+      }
+    },
+    "1002": {
+      "actorId": 1002,
+      "level": 8,
+      "cup": 298,
+      "proficiency": 700,
+      "maxCup": 298,
+      "createAt": 1632279237,
+      "equipSkill": [
+        1002101
+      ],
+      "haveSkill": [
+        1002101
+      ],
+      "collocation": {
+        "1": 111,
+        "2": 204,
+        "3": 304,
+        "4": 412
+      }
+    },
+    "1003": {
+      "actorId": 1003,
+      "level": 1,
+      "cup": 392,
+      "proficiency": 1208,
+      "maxCup": 392,
+      "createAt": 1632460816,
+      "collocation": {
+        "1": 108
+      }
+    },
+    "1004": {
+      "actorId": 1004,
+      "level": 6,
+      "cup": 588,
+      "proficiency": 1055,
+      "maxCup": 592,
+      "createAt": 1632305075,
+      "collocation": {
+        "1": 101,
+        "2": 210,
+        "3": 305,
+        "4": 403
+      }
+    },
+    "1005": {
+      "actorId": 1005,
+      "level": 4,
+      "cup": 138,
+      "proficiency": 1010,
+      "maxCup": 140,
+      "createAt": 1632315036,
+      "collocation": {
+        "1": 106,
+        "6": 603
+      }
+    },
+    "1009": {
+      "actorId": 1009,
+      "level": 1,
+      "cup": 274,
+      "proficiency": 1073,
+      "maxCup": 280,
+      "createAt": 1632892466
+    },
+    "1013": {
+      "actorId": 1013,
+      "level": 9,
+      "cup": 1257,
+      "proficiency": 405,
+      "maxCup": 1257,
+      "createAt": 1632804871,
+      "equipSkill": [
+        1013101
+      ],
+      "haveSkill": [
+        1013101
+      ],
+      "collocation": {
+        "4": 401,
+        "5": 504
+      }
+    },
+    "1015": {
+      "actorId": 1015,
+      "level": 5,
+      "cup": 342,
+      "proficiency": 599,
+      "maxCup": 342,
+      "createAt": 1633866441
+    },
+    "2002": {
+      "actorId": 2002,
+      "level": 8,
+      "cup": 609,
+      "proficiency": 530,
+      "maxCup": 609,
+      "createAt": 1632279068,
+      "equipSkill": [
+        2002101
+      ],
+      "haveSkill": [
+        2002101
+      ],
+      "skin": 2002101,
+      "collocation": {
+        "1": 104,
+        "3": 312,
+        "5": 502
+      }
+    },
+    "2003": {
+      "actorId": 2003,
+      "level": 1,
+      "cup": 331,
+      "proficiency": 1220,
+      "maxCup": 331,
+      "createAt": 1632302901,
+      "collocation": {
+        "1": 110,
+        "2": 210,
+        "3": 304,
+        "4": 403
+      }
+    },
+    "2004": {
+      "actorId": 2004,
+      "level": 7,
+      "cup": 1138,
+      "proficiency": 475,
+      "maxCup": 1142,
+      "createAt": 1632548739,
+      "collocation": {
+        "1": 110,
+        "2": 210,
+        "3": 304,
+        "4": 403,
+        "5": 504
+      }
+    },
+    "2005": {
+      "actorId": 2005,
+      "level": 1,
+      "cup": 558,
+      "proficiency": 1371,
+      "maxCup": 558,
+      "createAt": 1632313686,
+      "skin": 2005101,
+      "collocation": {
+        "1": 108,
+        "2": 204,
+        "3": 312,
+        "4": 402
+      }
+    },
+    "2006": {
+      "actorId": 2006,
+      "level": 6,
+      "cup": 867,
+      "proficiency": 804,
+      "maxCup": 867,
+      "createAt": 1632327084,
+      "collocation": {
+        "1": 101,
+        "2": 204,
+        "3": 304,
+        "4": 401,
+        "5": 504
+      }
+    },
+    "2008": {
+      "actorId": 2008,
+      "level": 7,
+      "cup": 929,
+      "proficiency": 815,
+      "maxCup": 936,
+      "createAt": 1632800371,
+      "collocation": {
+        "2": 206
+      }
+    },
+    "2012": {
+      "actorId": 2012,
+      "level": 6,
+      "cup": 881,
+      "proficiency": 923,
+      "maxCup": 881,
+      "createAt": 1632757307,
+      "collocation": {
+        "6": 603
+      }
+    },
+    "2015": {
+      "actorId": 2015,
+      "level": 13,
+      "cup": 4518,
+      "proficiency": 188,
+      "maxCup": 4518,
+      "createAt": 1632992813,
+      "equipSkill": [
+        2015101
+      ],
+      "haveSkill": [
+        2015101
+      ],
+      "collocation": {
+        "1": 101,
+        "4": 401,
+        "5": 504
+      }
+    },
+    "2016": {
+      "actorId": 2016,
+      "level": 8,
+      "cup": 733,
+      "proficiency": 370,
+      "maxCup": 733,
+      "createAt": 1633558766,
+      "equipSkill": [
+        2016101
+      ],
+      "haveSkill": [
+        2016101
+      ],
+      "collocation": {
+        "1": 101,
+        "4": 401,
+        "5": 504
+      }
+    },
+    "2018": {
+      "actorId": 2018,
+      "level": 6,
+      "cup": 931,
+      "proficiency": 823,
+      "maxCup": 931,
+      "createAt": 1633303035
+    },
+    "2201": {
+      "actorId": 2201,
+      "level": 16,
+      "cup": 16912,
+      "proficiency": 29,
+      "maxCup": 16912,
+      "createAt": 1632761595,
+      "equipSkill": [
+        2201102,
+        2201201
+      ],
+      "haveSkill": [
+        2201102,
+        2201201
+      ],
+      "skin": 2201101,
+      "collocation": {
+        "1": 101
+      }
+    },
+    "3001": {
+      "actorId": 3001,
+      "level": 8,
+      "cup": 989,
+      "proficiency": 750,
+      "maxCup": 989,
+      "createAt": 1632492369,
+      "equipSkill": [
+        3001102
+      ],
+      "haveSkill": [
+        3001102
+      ],
+      "collocation": {
+        "1": 102,
+        "2": 212,
+        "3": 304,
+        "4": 401,
+        "5": 503
+      }
+    },
+    "3002": {
+      "actorId": 3002,
+      "level": 6,
+      "cup": 192,
+      "proficiency": 790,
+      "maxCup": 192,
+      "createAt": 1632293225,
+      "collocation": {
+        "1": 101,
+        "2": 209,
+        "3": 305,
+        "4": 401,
+        "5": 504,
+        "6": 603
+      }
+    },
+    "3003": {
+      "actorId": 3003,
+      "level": 9,
+      "cup": 926,
+      "proficiency": 948,
+      "maxCup": 940,
+      "createAt": 1632461055,
+      "equipSkill": [
+        3003101
+      ],
+      "haveSkill": [
+        3003101
+      ],
+      "collocation": {
+        "1": 108,
+        "2": 212,
+        "3": 311
+      }
+    },
+    "3004": {
+      "actorId": 3004,
+      "level": 7,
+      "cup": 935,
+      "proficiency": 962,
+      "maxCup": 935,
+      "createAt": 1632623086,
+      "collocation": {
+        "1": 113,
+        "2": 206,
+        "3": 304,
+        "4": 402
+      }
+    },
+    "3005": {
+      "actorId": 3005,
+      "level": 1,
+      "cup": 442,
+      "proficiency": 1219,
+      "maxCup": 452,
+      "createAt": 1632279362,
+      "collocation": {
+        "2": 201,
+        "3": 303
+      }
+    },
+    "3006": {
+      "actorId": 3006,
+      "level": 7,
+      "cup": 1018,
+      "proficiency": 856,
+      "maxCup": 1018,
+      "createAt": 1632582420,
+      "collocation": {
+        "1": 110,
+        "2": 210,
+        "3": 310,
+        "4": 410,
+        "5": 502
+      }
+    },
+    "3009": {
+      "actorId": 3009,
+      "level": 7,
+      "cup": 1218,
+      "proficiency": 884,
+      "maxCup": 1218,
+      "createAt": 1632754742,
+      "skin": 3009101
+    },
+    "3010": {
+      "actorId": 3010,
+      "level": 15,
+      "cup": 7508,
+      "proficiency": 17,
+      "maxCup": 7508,
+      "createAt": 1632305249,
+      "equipSkill": [
+        3010101
+      ],
+      "haveSkill": [
+        3010101
+      ],
+      "collocation": {
+        "1": 111,
+        "2": 211,
+        "3": 311,
+        "4": 401,
+        "5": 504
+      }
+    }
+  },

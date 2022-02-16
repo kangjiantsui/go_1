@@ -1,0 +1,58 @@
+{
+  "fightId": 0,
+  "battleType": 4,
+  "mode": 201,
+  "stage": 1,
+  "fighter": [
+    {
+      "inviteCode": 183844,
+      "result": 0,
+      "actor": [
+        {
+          "actorId": 2002,
+          "goal": 6,
+          "score": 12,
+          "dunk": 2,
+          "block": 0,
+          "steal": 1,
+          "eventMap": {
+            "14": 1,
+            "15": 4,
+            "2": 2,
+            "3": 1,
+            "7": 1,
+            "78": 2
+          }
+        }
+      ],
+      "isRobot": 0,
+      "again    ": 0,
+      "bigScore": 0,
+      "faceMap": {
+        "107": 2
+      }
+    },
+    {
+      "inviteCode": 184187,
+      "result": 1,
+      "actor": [
+        {
+          "actorId": 2002,
+          "goal": 0,
+          "score": 0,
+          "dunk": 0,
+          "block": 0,
+          "steal": 0,
+          "eventMap": {
+            "10": 1
+          }
+        }
+      ],
+      "isRobot": 0,
+      "again": 0,
+      "bigScor    e": 0,
+      "faceMap": null
+    }
+  ],
+  "fightIdStr": "327378_1630671740_1"
+}

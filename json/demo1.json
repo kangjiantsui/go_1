@@ -1,0 +1,36 @@
+{
+  "title": "活动模块顺序",
+  "type": "object",
+  "options": {
+    "disable_collapse": true,
+    "expand_height": true,
+    "disable_edit_json": true
+  },
+  "properties": {
+    "type": {
+      "type": "integer",
+      "default": 0,
+      "description": "模块类型"
+    },
+    "popUpsWeight": {
+      "type": "integer",
+      "default": 0,
+      "description": "弹窗优先级"
+    },
+    "popUpsNumOfTimes": {
+      "type": "integer",
+      "default": 0,
+      "description": "弹窗次数"
+    },
+    "tabWeight": {
+      "type": "integer",
+      "default": 0,
+      "description": "页签优先级"
+    },
+    "close": {
+      "type": "boolean",
+      "default": false,
+      "description": "活动是否通过后台关闭"
+    }
+  }
+}

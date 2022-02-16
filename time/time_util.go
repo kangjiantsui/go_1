@@ -1,0 +1,197 @@
+package main
+
+import (
+	"time"
+)
+
+// 获取本周指定星期指定小时的时间
+func getWeekTime(timePram *time.Time, weekDay time.Weekday, hour int) *time.Time {
+	if timePram == nil {
+		return nil
+	}
+	var ret *time.Time
+	if timePram.Hour() < hour {
+		temp := time.Date(timePram.Year(), timePram.Month(), timePram.Day(), hour, 0, 0, 0, time.Local).Add(time.Hour * time.Duration(-24))
+		timePram = &temp
+	} else {
+		temp := time.Date(timePram.Year(), timePram.Month(), timePram.Day(), hour, 0, 0, 0, time.Local)
+		timePram = &temp
+	}
+	mondayTime := timePram.Add(time.Hour * time.Duration(24*(time.Monday-timePram.Weekday())))
+	if timePram.Weekday() == time.Sunday {
+		mondayTime = timePram.Add(time.Hour * 24 * -6)
+	}
+	if weekDay != time.Sunday {
+		temp := mondayTime.Add(time.Hour * 24 * time.Duration(weekDay-1))
+		ret = &temp
+	} else {
+		temp := mondayTime.Add(time.Hour * 24 * 6)
+		ret = &temp
+	}
+	return ret
+}
+
+// 获取当前系统时间
+func getNow() *time.Time {
+	t := time.Now()
+	return &t
+}
+
+// 获得当天该小时的时间戳
+func getHourTime(now *time.Time, hour int) *time.Time {
+	timeHour := time.Date(now.Year(), now.Month(), now.Day(), hour, 0, 0, 0, time.Local)
+	// 当前时间在今日该小时之前，则返回昨日该小时
+	if now.Before(timeHour) {
+		timeHour = timeHour.Add(time.Hour * time.Duration(-24))
+	}
+	return &timeHour
+}
+
+type TimeUtil interface {
+	// IsSameDay 1. 按照 n 点刷新,(和当前时间)是否在同一天(若不是同一天则返回当天的这个小时)
+	IsSameDay(timeParam *time.Time, hour int) (isSameDay bool, timeToday *time.Time)
+	// IsSameWeek 2. 按照 n 点刷新,(和当前时间)是否在同一周(若不是同一周则返回本周的这个小时)
+	IsSameWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (isSameWeek bool, timeWeek *time.Time)
+	// CalcLastHourAndNextHour  3. 按照每天刷新, [%H] 点刷新,下一次时间点,上一次时间点
+	CalcLastHourAndNextHour(timeParam *time.Time, hour int) (last *time.Time, next *time.Time)
+	// CalcLastWeekAndNextWeek  4. 按照每周刷新,周 [%D], [%H]点刷新，下一次时间点,上一次时间点
+	CalcLastWeekAndNextWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (last *time.Time, next *time.Time)
+	// CalcLastMonthAndNextMonth  5. 按照每月刷新,[%D-%H-%M, %D-%H-%M] 号刷新,[%D-%H-%M, %D-%H-%M] 点刷新,下一次时间点,上一次时间点
+	CalcLastMonthAndNextMonth(timeParam *time.Time, day int, hour int) (last *time.Time, next *time.Time)
+	// CalcDailyManyHourTime 6. 按照每天,[Y1, Y2] 点刷新,两个时间点之间,有多少次,分别是什么时间点
+	CalcDailyManyHourTime(head *time.Time, tail *time.Time, hour ...int) (timePoints []*time.Time)
+	// CalcWeeklyManyWeekDayManyHourTime 7. 按照每周,周[X1, X2], [Y1, Y2] 点刷新,两个时间点之间有多少次,分别是什么时间点
+	CalcWeeklyManyWeekDayManyHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time)
+	// CalcWeeklyManyMonthDayManyHourTime 8. 按照每月 [X1, X2] 号, [Y1, Y2] 点刷新,两个时间点之间有多少次,分别是什么时间点
+	CalcWeeklyManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time)
+}
+
+type TimeUtilImpl struct {
+}
+
+func (t TimeUtilImpl) IsSameDay(timeParam *time.Time, hour int) (isSameDay bool, timeToday *time.Time) {
+	if getHourTime(timeParam, hour) != getHourTime(getNow(), hour) {
+		return false, getHourTime(getNow(), hour)
+	}
+	return true, nil
+}
+
+func (t TimeUtilImpl) IsSameWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (isSameWeek bool, timeWeek *time.Time) {
+	if getWeekTime(timeParam, weekDay, hour) != getWeekTime(getNow(), weekDay, hour) {
+		return false, getWeekTime(getNow(), weekDay, hour)
+	}
+	return true, nil
+}
+
+func (t TimeUtilImpl) CalcLastHourAndNextHour(timeParam *time.Time, hour int) (last *time.Time, next *time.Time) {
+	last = getHourTime(timeParam, hour)
+	temp := last.Add(time.Hour * 24)
+	next = &temp
+	return last, next
+}
+
+func (t TimeUtilImpl) CalcLastWeekAndNextWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (last *time.Time, next *time.Time) {
+	timeParam = getHourTime(timeParam, hour)
+	if timeParam.Weekday() == time.Sunday || timeParam.Weekday() >= weekDay {
+		last = getWeekTime(timeParam, weekDay, hour)
+		temp := last.Add(time.Hour * 27 * 7)
+		next = &temp
+	} else {
+		next = getWeekTime(timeParam, weekDay, hour)
+		temp := next.Add(time.Hour * 27 * -7)
+		last = &temp
+	}
+	return last, next
+}
+
+func (t TimeUtilImpl) CalcLastMonthAndNextMonth(timeParam *time.Time, day int, hour int) (last *time.Time, next *time.Time) {
+	timeParam = getHourTime(timeParam, hour)
+	if timeParam.Day() >= day {
+		temp := time.Date(timeParam.Year(), timeParam.Month(), day, hour, 0, 0, 0, time.Local)
+		last = &temp
+		if last.Month() == 12 {
+			temp1 := time.Date(last.Year()+1, 1, day, hour, 0, 0, 0, time.Local)
+			next = &temp1
+		}
+	} else {
+		temp := time.Date(timeParam.Year(), timeParam.Month(), day, hour, 0, 0, 0, time.Local)
+		next = &temp
+		if next.Month() == 1 {
+			temp1 := time.Date(next.Year()-1, 12, day, hour, 0, 0, 0, time.Local)
+			last = &temp1
+		}
+	}
+	return last, next
+}
+
+func (t TimeUtilImpl) CalcDailyManyHourTime(head *time.Time, tail *time.Time, hour ...int) (timePoints []*time.Time) {
+	if hour == nil {
+		return nil
+	}
+	hours := map[int]interface{}{}
+	for _, e := range hour {
+		hours[e] = nil
+	}
+	temp := time.Date(head.Year(), head.Month(), head.Day(), head.Hour(), head.Minute(), head.Second(), 0, time.Local)
+	begin := &temp
+	for {
+		if begin.After(*tail) {
+			break
+		}
+		if _, ok := hours[begin.Hour()]; ok {
+			timePoint := time.Date(begin.Year(), begin.Month(), begin.Day(), begin.Hour(), begin.Minute(), begin.Second(), 0, time.Local)
+			timePoints = append(timePoints, &timePoint)
+		}
+		temp1 := begin.Add(time.Hour)
+		begin = &temp1
+	}
+	return timePoints
+}
+
+func (t TimeUtilImpl) CalcWeeklyManyWeekDayManyHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time) {
+	if weekDay == nil {
+		return nil
+	}
+	weekDays := map[time.Weekday]interface{}{}
+	for _, e := range weekDay {
+		weekDays[e] = nil
+	}
+	temp := time.Date(head.Year(), head.Month(), head.Day(), head.Hour(), head.Minute(), head.Second(), 0, time.Local)
+	begin := &temp
+	for {
+		if begin.After(*tail) {
+			break
+		}
+		if _, ok := weekDays[begin.Weekday()]; ok && begin.Hour() == hour {
+			timePoint := time.Date(begin.Year(), begin.Month(), begin.Day(), begin.Hour(), begin.Minute(), begin.Second(), 0, time.Local)
+			timePoints = append(timePoints, &timePoint)
+		}
+		temp1 := begin.Add(time.Hour)
+		begin = &temp1
+	}
+	return timePoints
+}
+
+func (t TimeUtilImpl) CalcWeeklyManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time) {
+	if monthDay == nil {
+		return nil
+	}
+	monthDays := map[int]interface{}{}
+	for _, e := range monthDay {
+		monthDays[e] = nil
+	}
+	temp := time.Date(head.Year(), head.Month(), head.Day(), head.Hour(), head.Minute(), head.Second(), 0, time.Local)
+	begin := &temp
+	for {
+		if begin.After(*tail) {
+			break
+		}
+		if _, ok := monthDays[begin.Day()]; ok && begin.Hour() == hour {
+			timePoint := time.Date(begin.Year(), begin.Month(), begin.Day(), begin.Hour(), begin.Minute(), begin.Second(), 0, time.Local)
+			timePoints = append(timePoints, &timePoint)
+		}
+		temp1 := begin.Add(time.Hour)
+		begin = &temp1
+	}
+	return timePoints
+}
