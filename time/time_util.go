@@ -4,6 +4,10 @@ import (
 	"time"
 )
 
+const (
+	TimeFormat = "2006-01-02"
+)
+
 // 获取本周指定星期指定小时的时间
 func getWeekTime(timePram *time.Time, weekDay time.Weekday, hour int) *time.Time {
 	if timePram == nil {
@@ -64,6 +68,10 @@ type TimeUtil interface {
 	CalcWeeklyManyWeekDayManyHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time)
 	// CalcWeeklyManyMonthDayManyHourTime 8. 按照每月 [X1, X2] 号, [Y1, Y2] 点刷新,两个时间点之间有多少次,分别是什么时间点
 	CalcWeeklyManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time)
+	// Timestamp2Time 时间戳转时间
+	Timestamp2Time(timestamp int64) *time.Time
+	// ParseStr 日期字符串转时间
+	ParseStr(str string) *time.Time
 }
 
 type TimeUtilImpl struct {
@@ -194,4 +202,13 @@ func (t TimeUtilImpl) CalcWeeklyManyMonthDayManyHourTime(head *time.Time, tail *
 		begin = &temp1
 	}
 	return timePoints
+}
+
+func (t TimeUtilImpl) Timestamp2Time(timestamp int64) *time.Time {
+	ret := time.Unix(timestamp, 0)
+	return &ret
+}
+
+func (t TimeUtilImpl) ParseStr(str string) *time.Time {
+	return &ret
 }

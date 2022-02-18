@@ -13,7 +13,7 @@ require (
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/qiniu/qmgo v0.9.4
 	github.com/satori/go.uuid v1.2.0
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.0
 	github.com/tealeg/xlsx v1.0.5 // indirect
 	github.com/urfave/cli/v2 v2.3.0
 	go.mongodb.org/mongo-driver v1.5.1
