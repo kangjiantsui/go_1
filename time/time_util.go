@@ -53,42 +53,44 @@ func getHourTime(now *time.Time, hour int) *time.Time {
 
 type TimeUtil interface {
 	// IsSameDay 1. 按照 n 点刷新,(和当前时间)是否在同一天(若不是同一天则返回当天的这个小时)
-	IsSameDay(timeParam *time.Time, hour int) (isSameDay bool, timeToday *time.Time)
+	IsSameDay(t1 *time.Time, t2 *time.Time, hour int) (isSameDay bool)
 	// IsSameWeek 2. 按照 n 点刷新,(和当前时间)是否在同一周(若不是同一周则返回本周的这个小时)
-	IsSameWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (isSameWeek bool, timeWeek *time.Time)
+	IsSameWeek(t1 *time.Time, t2 *time.Time, weekDay time.Weekday, hour int) (isSameWeek bool)
 	// CalcLastHourAndNextHour  3. 按照每天刷新, [%H] 点刷新,下一次时间点,上一次时间点
 	CalcLastHourAndNextHour(timeParam *time.Time, hour int) (last *time.Time, next *time.Time)
-	// CalcLastWeekAndNextWeek  4. 按照每周刷新,周 [%D], [%H]点刷新，下一次时间点,上一次时间点
+	// CalcLastWeekAndNextWeek  4. 按照每周刷新,周 [%D], [%H]点刷新,下一次时间点,上一次时间点
 	CalcLastWeekAndNextWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (last *time.Time, next *time.Time)
 	// CalcLastMonthAndNextMonth  5. 按照每月刷新,[%D-%H-%M, %D-%H-%M] 号刷新,[%D-%H-%M, %D-%H-%M] 点刷新,下一次时间点,上一次时间点
 	CalcLastMonthAndNextMonth(timeParam *time.Time, day int, hour int) (last *time.Time, next *time.Time)
 	// CalcDailyManyHourTime 6. 按照每天,[Y1, Y2] 点刷新,两个时间点之间,有多少次,分别是什么时间点
 	CalcDailyManyHourTime(head *time.Time, tail *time.Time, hour ...int) (timePoints []*time.Time)
-	// CalcWeeklyManyWeekDayManyHourTime 7. 按照每周,周[X1, X2], [Y1, Y2] 点刷新,两个时间点之间有多少次,分别是什么时间点
-	CalcWeeklyManyWeekDayManyHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time)
-	// CalcWeeklyManyMonthDayManyHourTime 8. 按照每月 [X1, X2] 号, [Y1, Y2] 点刷新,两个时间点之间有多少次,分别是什么时间点
-	CalcWeeklyManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time)
+	// CalcWeeklyManyWeekDayHourTime  7. 按照每周,周[X1, X2],点刷新,两个时间点之间有多少次,分别是什么时间点
+	CalcWeeklyManyWeekDayHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time)
+	// CalcEachMonthManyMonthDayManyHourTime  8. 按照每月 [X1, X2] 号, [Y1, Y2] 点刷新,两个时间点之间有多少次,分别是什么时间点
+	CalcEachMonthManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time)
 	// Timestamp2Time 时间戳转时间
 	Timestamp2Time(timestamp int64) *time.Time
 	// ParseStr 日期字符串转时间
-	ParseStr(str string) *time.Time
+	ParseStr(str string) (*time.Time, error)
+	// Timestamp2Str 时间戳转字符串
+	Timestamp2Str(timestamp int64) string
 }
 
 type TimeUtilImpl struct {
 }
 
-func (t TimeUtilImpl) IsSameDay(timeParam *time.Time, hour int) (isSameDay bool, timeToday *time.Time) {
-	if getHourTime(timeParam, hour) != getHourTime(getNow(), hour) {
-		return false, getHourTime(getNow(), hour)
+func (t TimeUtilImpl) IsSameDay(t1 *time.Time, t2 *time.Time, hour int) (isSameDay bool) {
+	if *getHourTime(t1, hour) != *getHourTime(t2, hour) {
+		return false
 	}
-	return true, nil
+	return true
 }
 
-func (t TimeUtilImpl) IsSameWeek(timeParam *time.Time, weekDay time.Weekday, hour int) (isSameWeek bool, timeWeek *time.Time) {
-	if getWeekTime(timeParam, weekDay, hour) != getWeekTime(getNow(), weekDay, hour) {
-		return false, getWeekTime(getNow(), weekDay, hour)
+func (t TimeUtilImpl) IsSameWeek(t1 *time.Time, t2 *time.Time, weekDay time.Weekday, hour int) (isSameWeek bool) {
+	if *getWeekTime(t1, weekDay, hour) != *getWeekTime(t2, weekDay, hour) {
+		return false
 	}
-	return true, nil
+	return true
 }
 
 func (t TimeUtilImpl) CalcLastHourAndNextHour(timeParam *time.Time, hour int) (last *time.Time, next *time.Time) {
@@ -102,11 +104,11 @@ func (t TimeUtilImpl) CalcLastWeekAndNextWeek(timeParam *time.Time, weekDay time
 	timeParam = getHourTime(timeParam, hour)
 	if timeParam.Weekday() == time.Sunday || timeParam.Weekday() >= weekDay {
 		last = getWeekTime(timeParam, weekDay, hour)
-		temp := last.Add(time.Hour * 27 * 7)
+		temp := last.In(time.Local).Add(time.Hour * 24 * 7).In(time.Local)
 		next = &temp
 	} else {
 		next = getWeekTime(timeParam, weekDay, hour)
-		temp := next.Add(time.Hour * 27 * -7)
+		temp := next.Add(time.Hour * 24 * -7)
 		last = &temp
 	}
 	return last, next
@@ -117,6 +119,8 @@ func (t TimeUtilImpl) CalcLastMonthAndNextMonth(timeParam *time.Time, day int, h
 	if timeParam.Day() >= day {
 		temp := time.Date(timeParam.Year(), timeParam.Month(), day, hour, 0, 0, 0, time.Local)
 		last = &temp
+		temp2 := time.Date(last.Year(), last.Month()+1, day, hour, 0, 0, 0, time.Local)
+		next = &temp2
 		if last.Month() == 12 {
 			temp1 := time.Date(last.Year()+1, 1, day, hour, 0, 0, 0, time.Local)
 			next = &temp1
@@ -124,6 +128,8 @@ func (t TimeUtilImpl) CalcLastMonthAndNextMonth(timeParam *time.Time, day int, h
 	} else {
 		temp := time.Date(timeParam.Year(), timeParam.Month(), day, hour, 0, 0, 0, time.Local)
 		next = &temp
+		temp2 := time.Date(last.Year(), last.Month()+1, day, hour, 0, 0, 0, time.Local)
+		next = &temp2
 		if next.Month() == 1 {
 			temp1 := time.Date(next.Year()-1, 12, day, hour, 0, 0, 0, time.Local)
 			last = &temp1
@@ -156,7 +162,7 @@ func (t TimeUtilImpl) CalcDailyManyHourTime(head *time.Time, tail *time.Time, ho
 	return timePoints
 }
 
-func (t TimeUtilImpl) CalcWeeklyManyWeekDayManyHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time) {
+func (t TimeUtilImpl) CalcWeeklyManyWeekDayHourTime(head *time.Time, tail *time.Time, hour int, weekDay ...time.Weekday) (timePoints []*time.Time) {
 	if weekDay == nil {
 		return nil
 	}
@@ -180,7 +186,7 @@ func (t TimeUtilImpl) CalcWeeklyManyWeekDayManyHourTime(head *time.Time, tail *t
 	return timePoints
 }
 
-func (t TimeUtilImpl) CalcWeeklyManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time) {
+func (t TimeUtilImpl) CalcEachMonthManyMonthDayManyHourTime(head *time.Time, tail *time.Time, hour int, monthDay ...int) (timePoints []*time.Time) {
 	if monthDay == nil {
 		return nil
 	}
@@ -209,6 +215,14 @@ func (t TimeUtilImpl) Timestamp2Time(timestamp int64) *time.Time {
 	return &ret
 }
 
-func (t TimeUtilImpl) ParseStr(str string) *time.Time {
-	return &ret
+func (t TimeUtilImpl) ParseStr(str string) (*time.Time, error) {
+	ret, err := time.ParseInLocation(TimeFormat, str, time.Local)
+	if err != nil {
+		return nil, err
+	}
+	return &ret, nil
+}
+
+func (t TimeUtilImpl) Timestamp2Str(timestamp int64) string {
+	return time.Unix(timestamp, 0).Format(TimeFormat)
 }
