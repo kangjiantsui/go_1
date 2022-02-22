@@ -15,81 +15,220 @@ func TestTimeUtilImpl_Timestamp2Str(t *testing.T) {
 }
 
 func TestTimeUtilImpl_IsSameDay(t *testing.T) {
-	now := time.Unix(1645425981, 0)
+	testTable := []struct {
+		t1     time.Time
+		now    time.Time
+		hour   int
+		result bool
+	}{
+		{
+			t1:     time.Date(2022, 2, 21, 4, 13, 2, 0, time.Local),
+			now:    time.Date(2022, 2, 21, 14, 46, 21, 0, time.Local),
+			hour:   5,
+			result: false,
+		},
+		{
+			t1:     time.Date(2022, 2, 21, 5, 13, 2, 0, time.Local),
+			now:    time.Date(2022, 2, 21, 14, 46, 21, 0, time.Local),
+			hour:   5,
+			result: true,
+		},
+	}
 
-	t1 := time.Unix(1645387982, 0)
-	assert.Equal(t, TimeUtilImpl{}.IsSameDay(&t1, &now, 5), false)
-
-	t2 := time.Unix(1645391582, 0)
-	assert.Equal(t, TimeUtilImpl{}.IsSameDay(&t2, &now, 5), true)
+	for _, e := range testTable {
+		ret := TimeUtilImpl{}.IsSameDay(e.t1, e.now, e.hour)
+		assert.Equal(t, ret, e.result)
+	}
 }
 
 func TestTimeUtilImpl_IsSameWeek(t *testing.T) {
-	now := time.Unix(1645425981, 0)
+	testTable := []struct {
+		t1      time.Time
+		now     time.Time
+		weekDay time.Weekday
+		hour    int
+		result  bool
+	}{
+		{
+			t1:      time.Date(2022, 2, 27, 5, 13, 2, 0, time.Local),
+			now:     time.Date(2022, 2, 21, 14, 14, 46, 21, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+			result:  true,
+		},
+		{
+			t1:      time.Date(2022, 2, 28, 5, 13, 2, 0, time.Local),
+			now:     time.Date(2022, 2, 21, 14, 14, 46, 21, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+			result:  false,
+		},
+		{
+			t1:      time.Date(2022, 2, 28, 4, 13, 2, 0, time.Local),
+			now:     time.Date(2022, 2, 21, 14, 14, 46, 21, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+			result:  true,
+		},
+		{
+			t1:      time.Date(2022, 2, 21, 4, 13, 2, 0, time.Local),
+			now:     time.Date(2022, 2, 21, 14, 14, 46, 21, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+			result:  false,
+		},
+	}
 
-	t1 := time.Unix(1645909982, 0)
-	assert.Equal(t, TimeUtilImpl{}.IsSameWeek(&t1, &now, time.Monday, 5), true)
-
-	t2 := time.Unix(1645996382, 0)
-	assert.Equal(t, TimeUtilImpl{}.IsSameWeek(&t2, &now, time.Monday, 5), false)
-
-	t3 := time.Unix(1645992782, 0)
-	assert.Equal(t, TimeUtilImpl{}.IsSameWeek(&t3, &now, time.Monday, 5), true)
-
-	t4 := time.Unix(1645387982, 0)
-	assert.Equal(t, TimeUtilImpl{}.IsSameWeek(&t4, &now, time.Monday, 5), false)
+	for _, e := range testTable {
+		ret := TimeUtilImpl{}.IsSameWeek(e.t1, e.now, e.weekDay, e.hour)
+		assert.Equal(t, ret, e.result)
+	}
 }
 
 func TestTimeUtilImpl_CalcLastHourAndNextHour(t *testing.T) {
 	now := time.Unix(1645425981, 0)
-	last, next := TimeUtilImpl{}.CalcLastHourAndNextHour(&now, 5)
-	assert.Equal(t, *last, time.Unix(1645390800, 0))
-	assert.Equal(t, *next, time.Unix(1645477200, 0))
+	last, next := TimeUtilImpl{}.CalcLastHourAndNextHour(now, 5)
+	assert.Equal(t, last, time.Unix(1645390800, 0))
+	assert.Equal(t, next, time.Unix(1645477200, 0))
+
+	testTable := []struct {
+		now  time.Time
+		last time.Time
+		next time.Time
+		hour int
+	}{
+		{
+			now:  time.Date(2022, 2, 21, 14, 46, 21, 0, time.Local),
+			last: time.Date(2022, 2, 21, 5, 0, 0, 0, time.Local),
+			next: time.Date(2022, 2, 22, 5, 0, 0, 0, time.Local),
+			hour: 5,
+		},
+	}
+
+	for _, e := range testTable {
+		retLast, retNext := TimeUtilImpl{}.CalcLastHourAndNextHour(e.now, e.hour)
+		assert.Equal(t, e.last, retLast)
+		assert.Equal(t, e.next, retNext)
+	}
 }
 
 func TestTimeUtilImpl_CalcLastWeekAndNextWeek(t *testing.T) {
-	now := time.Unix(1645425981, 0)
-	last, next := TimeUtilImpl{}.CalcLastWeekAndNextWeek(&now, time.Monday, 5)
-	assert.Equal(t, *last, time.Unix(1645390800, 0))
-	assert.Equal(t, *next, time.Unix(1645995600, 0))
+	testTable := []struct {
+		now     time.Time
+		last    time.Time
+		next    time.Time
+		weekDay time.Weekday
+		hour    int
+	}{
+		{
+			now:     time.Date(2022, 2, 21, 14, 46, 21, 0, time.Local),
+			last:    time.Date(2022, 2, 21, 5, 0, 0, 0, time.Local),
+			next:    time.Date(2022, 2, 28, 5, 0, 0, 0, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+		},
+		{
+			now:     time.Date(2022, 2, 20, 14, 46, 21, 0, time.Local),
+			last:    time.Date(2022, 2, 14, 5, 0, 0, 0, time.Local),
+			next:    time.Date(2022, 2, 21, 5, 0, 0, 0, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+		},
+		{
+			now:     time.Date(2022, 2, 21, 4, 46, 21, 0, time.Local),
+			last:    time.Date(2022, 2, 14, 5, 0, 0, 0, time.Local),
+			next:    time.Date(2022, 2, 21, 5, 0, 0, 0, time.Local),
+			weekDay: time.Monday,
+			hour:    5,
+		},
+	}
 
-	now = time.Unix(1645304400, 0)
-	last, next = TimeUtilImpl{}.CalcLastWeekAndNextWeek(&now, time.Monday, 5)
-	assert.Equal(t, *last, time.Unix(1644786000, 0))
-	assert.Equal(t, *next, time.Unix(1645390800, 0))
-
-	now = time.Unix(1645387200, 0)
-	last, next = TimeUtilImpl{}.CalcLastWeekAndNextWeek(&now, time.Monday, 5)
-	assert.Equal(t, *last, time.Unix(1644786000, 0))
-	assert.Equal(t, *next, time.Unix(1645390800, 0))
+	for _, e := range testTable {
+		retLast, retNext := TimeUtilImpl{}.CalcLastWeekAndNextWeek(e.now, e.weekDay, e.hour)
+		assert.Equal(t, retLast, e.last)
+		assert.Equal(t, retNext, e.next)
+	}
 }
 
 func TestTimeUtilImpl_CalcLastMonthAndNextMonth(t *testing.T) {
-	now := time.Unix(1645425981, 0)
-	last, next := TimeUtilImpl{}.CalcLastMonthAndNextMonth(&now, 1, 5)
-	assert.Equal(t, *last, time.Unix(1643662800, 0))
-	assert.Equal(t, *next, time.Unix(1646082000, 0))
+	testTable := []struct {
+		now  time.Time
+		last time.Time
+		next time.Time
+		day  int
+		hour int
+	}{
+		{
+			now:  time.Date(2022, 2, 21, 14, 46, 21, 0, time.Local),
+			last: time.Date(2022, 2, 1, 5, 0, 0, 0, time.Local),
+			next: time.Date(2022, 3, 1, 5, 0, 0, 0, time.Local),
+			day:  1,
+			hour: 5,
+		},
+		{
+			now:  time.Date(2022, 12, 01, 14, 46, 21, 0, time.Local),
+			last: time.Date(2022, 12, 1, 5, 0, 0, 0, time.Local),
+			next: time.Date(2023, 1, 1, 5, 0, 0, 0, time.Local),
+			day:  1,
+			hour: 5,
+		},
+	}
 
-	now = time.Unix(1671051600, 0)
-	last, next = TimeUtilImpl{}.CalcLastMonthAndNextMonth(&now, 1, 5)
-	assert.Equal(t, *last, time.Unix(1669842000, 0))
-	assert.Equal(t, *next, time.Unix(1672520400, 0))
+	for _, e := range testTable {
+		retLast, retNext := TimeUtilImpl{}.CalcLastMonthAndNextMonth(e.now, e.day, e.hour)
+		assert.Equal(t, retLast, e.last)
+		assert.Equal(t, retNext, e.next)
+	}
 }
 
 func TestTimeUtilImpl_CalcDailyManyHourTime(t *testing.T) {
-	head := time.Unix(1672520400, 0)
-	tail := time.Unix(1672758000, 0)
-	p1 := time.Unix(1672534800, 0)
-	p2 := time.Unix(1672621200, 0)
-	p3 := time.Unix(1672707600, 0)
-	assert.Equal(t, TimeUtilImpl{}.CalcDailyManyHourTime(&head, &tail, 9), []*time.Time{&p1, &p2, &p3})
+	testTable := []struct {
+		head   time.Time
+		tail   time.Time
+		hour   int
+		points []time.Time
+	}{
+		{
+			head: time.Date(2023, 1, 01, 5, 0, 0, 0, time.Local),
+			tail: time.Date(2023, 1, 03, 23, 0, 0, 0, time.Local),
+			hour: 9,
+			points: []time.Time{
+				time.Date(2023, 1, 1, 9, 0, 0, 0, time.Local),
+				time.Date(2023, 1, 2, 9, 0, 0, 0, time.Local),
+				time.Date(2023, 1, 3, 9, 0, 0, 0, time.Local),
+			},
+		},
+	}
+
+	for _, e := range testTable {
+		assert.Equal(t, TimeUtilImpl{}.CalcDailyManyHourTime(e.head, e.tail, e.hour), e.points)
+	}
 }
 
 func TestTimeUtilImpl_CalcWeeklyManyWeekDayHourTime(t *testing.T) {
-	head := time.Unix(1645732800, 0)
-	tail := time.Unix(1646510400, 0)
-	p1 := time.Unix(1645909200, 0)
-	p2 := time.Unix(1646082000, 0)
-	t.Log(TimeUtilImpl{}.CalcWeeklyManyWeekDayHourTime(&head, &tail, 5, time.Tuesday, time.Sunday))
-	assert.Equal(t, TimeUtilImpl{}.CalcWeeklyManyWeekDayHourTime(&head, &tail, 5, time.Tuesday, time.Sunday), []*time.Time{&p1, &p2})
+	testTable := []struct {
+		head    time.Time
+		tail    time.Time
+		hour    int
+		weekDay []time.Weekday
+		points  []time.Time
+	}{
+		{
+			head: time.Date(2022, 2, 25, 4, 0, 0, 0, time.Local),
+			tail: time.Date(2022, 3, 6, 4, 0, 0, 0, time.Local),
+			hour: 5,
+			weekDay: []time.Weekday{
+				time.Tuesday,
+				time.Sunday,
+			},
+			points: []time.Time{
+				time.Date(2022, 2, 27, 5, 0, 0, 0, time.Local),
+				time.Date(2022, 3, 1, 5, 0, 0, 0, time.Local),
+			},
+		},
+	}
+
+	for _, e := range testTable {
+		assert.Equal(t, TimeUtilImpl{}.CalcWeeklyManyWeekDayHourTime(e.head, e.tail, e.hour, e.weekDay...), e.points)
+	}
 }
