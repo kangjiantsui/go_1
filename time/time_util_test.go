@@ -57,11 +57,11 @@ func TestTimeUtilImpl_IsSameWeek(t *testing.T) {
 			result:  true,
 		},
 		{
-			t1:      time.Date(2022, 2, 28, 5, 13, 2, 0, time.Local),
+			t1:      time.Date(2022, 2, 28, 4, 13, 2, 0, time.Local),
 			now:     time.Date(2022, 2, 21, 14, 14, 46, 21, time.Local),
 			weekDay: time.Monday,
 			hour:    5,
-			result:  false,
+			result:  true,
 		},
 		{
 			t1:      time.Date(2022, 2, 28, 4, 13, 2, 0, time.Local),
@@ -74,6 +74,13 @@ func TestTimeUtilImpl_IsSameWeek(t *testing.T) {
 			t1:      time.Date(2022, 2, 21, 4, 13, 2, 0, time.Local),
 			now:     time.Date(2022, 2, 21, 14, 14, 46, 21, time.Local),
 			weekDay: time.Monday,
+			hour:    5,
+			result:  false,
+		},
+		{
+			t1:      time.Date(2022, 2, 27, 4, 13, 2, 0, time.Local),
+			now:     time.Date(2022, 2, 27, 14, 14, 46, 21, time.Local),
+			weekDay: time.Sunday,
 			hour:    5,
 			result:  false,
 		},
@@ -139,6 +146,13 @@ func TestTimeUtilImpl_CalcLastWeekAndNextWeek(t *testing.T) {
 			last:    time.Date(2022, 2, 14, 5, 0, 0, 0, time.Local),
 			next:    time.Date(2022, 2, 21, 5, 0, 0, 0, time.Local),
 			weekDay: time.Monday,
+			hour:    5,
+		},
+		{
+			now:     time.Date(2022, 2, 21, 4, 46, 21, 0, time.Local),
+			last:    time.Date(2022, 2, 20, 5, 0, 0, 0, time.Local),
+			next:    time.Date(2022, 2, 27, 5, 0, 0, 0, time.Local),
+			weekDay: time.Sunday,
 			hour:    5,
 		},
 	}

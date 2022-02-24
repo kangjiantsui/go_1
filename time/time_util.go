@@ -9,28 +9,17 @@ const (
 )
 
 // 获取本周指定星期指定小时的时间
-func getWeekTime(timePram time.Time, weekDay time.Weekday, hour int) time.Time {
-
-	var ret time.Time
-	if timePram.Hour() < hour {
-		temp := time.Date(timePram.Year(), timePram.Month(), timePram.Day(), hour, 0, 0, 0, time.Local).Add(time.Hour * time.Duration(-24))
-		timePram = temp
+func getWeekTime(timeParam time.Time, weekDay time.Weekday, hour int) time.Time {
+	if timeParam.Hour() < hour {
+		timeParam = time.Date(timeParam.Year(), timeParam.Month(), timeParam.Day(), hour, 0, 0, 0, time.Local).Add(time.Hour * time.Duration(-24))
 	} else {
-		temp := time.Date(timePram.Year(), timePram.Month(), timePram.Day(), hour, 0, 0, 0, time.Local)
-		timePram = temp
+		timeParam = time.Date(timeParam.Year(), timeParam.Month(), timeParam.Day(), hour, 0, 0, 0, time.Local)
 	}
-	mondayTime := timePram.Add(time.Hour * time.Duration(24*(time.Monday-timePram.Weekday())))
-	if timePram.Weekday() == time.Sunday {
-		mondayTime = timePram.Add(time.Hour * 24 * -6)
+	weekTime := timeParam.Add(time.Hour * time.Duration(24*(weekDay-timeParam.Weekday())))
+	if weekDay > timeParam.Weekday() {
+		weekTime = timeParam.Add(time.Hour * 24 * -6)
 	}
-	if weekDay != time.Sunday {
-		temp := mondayTime.Add(time.Hour * 24 * time.Duration(weekDay-1))
-		ret = temp
-	} else {
-		temp := mondayTime.Add(time.Hour * 24 * 6)
-		ret = temp
-	}
-	return ret
+	return weekTime
 }
 
 // 获得当天该小时的时间戳

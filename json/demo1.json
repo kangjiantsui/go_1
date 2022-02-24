@@ -1,18 +1,16 @@
 {
-  "inviteCode": 152004,
-  "name": "康齿牙科",
-  "avatar": "https://thirdqq.qlogo.cn/g?b=oidbu0026k=nib3m3COhlsKTNpicEqib5xdQu0026s=40u0026t=1557290750    ",
-  "playerAvatar": 316,
-  "maxCup": 13936,
-  "seasonIncrCup": 2510,
-  "point": 9170,
-  "seasonIncrPoint": 1980,
-  "maxStar": 336,
-  "seasonIncrStar": 90,
-  "title": 116,
-  "curCup": 13936,
-  "starlevel": 1,
-  "avatarFrame": 152,
-  "colorfulName": 101,
-  "endlessZone": 4
+  "title": "删除全局邮件",
+  "type": "object",
+  "options": {
+    "disable_collapse": true,
+    "expand_height": true,
+    "disable_edit_json": true
+  },
+  "properties": {
+    "mailId": {
+      "type": "integer",
+      "default": "",
+      "description": "邮件id"
+    }
+  }
 }
