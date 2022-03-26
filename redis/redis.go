@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/go-redis/redis/v7"
+	"os"
 )
 
 var (
@@ -13,16 +14,69 @@ func init() {
 	client = redis.NewClient(&redis.Options{
 		Addr:     "127.0.0.1:6379",
 		Password: "", // no password set
-		DB:       0,  // use default DB
+		DB:       3,  // use default DB
 	})
 }
 
 func main() {
-	f9()
+	f14()
+}
+
+func f14() {
+	fileName := "敏感词"
+	dstFile, err := os.Create(fileName)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	defer dstFile.Close()
+	s := "hello world"
+	dstFile.WriteString(s + "\n")
+}
+
+func f13() {
+	result, _, err := client.SScan("basketball:sensitiveWords", 0, "*", -1).Result()
+	if err != nil {
+		return
+	}
+	for _, e := range result {
+		fmt.Println(e)
+	}
+}
+
+func f12() {
+	result, err := client.ZRange("basketball:sensitiveWords", 0, -1).Result()
+	if err != nil {
+		panic(err)
+	}
+	for _, e := range result {
+		fmt.Println(e)
+	}
+}
+
+func f11() {
+	client = redis.NewClient(&redis.Options{
+		Addr:     "172.16.0.49:6379",
+		Password: "B8ahtB8XTl16VssF",
+		DB:       9,
+	})
+
+	client.ZCard("basketball:sensitiveWords")
+}
+
+func f10() {
+	result, err := client.ZRangeWithScores("ztest", 0, 1).Result()
+	if err != nil {
+		return
+	}
+	for _, e := range result {
+		fmt.Println(e.Score)
+		fmt.Println(e.Member)
+	}
 }
 
 func f9() {
-	fmt.Println(client.ZScore("ztest","kj").Result())
+	fmt.Println(client.ZScore("ztest", "kj").Result())
 }
 
 func f8() {
@@ -54,7 +108,6 @@ func f6() {
 	client.ZAdd("ztest", &redis.Z{Score: 8, Member: "f"})
 	client.ZAdd("ztest", &redis.Z{Score: 9, Member: "z"})
 
-	client.ZRem("ztest", "a")
 	fmt.Println(client.ZRange("ztest", 0, -1))
 }
 

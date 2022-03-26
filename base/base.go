@@ -4,12 +4,75 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"reflect"
+	"runtime/debug"
+	"strconv"
 	"strings"
 	"time"
+	"unsafe"
 )
 
 func main() {
-	f15()
+	f17()
+}
+
+func f17() {
+	code, err := GetUidByInviteCode(667689)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(code)
+}
+
+func String(b []byte) (s string) {
+	pbytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	pstring := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	pstring.Data = pbytes.Data
+	pstring.Len = pbytes.Len
+	return
+}
+
+func SliceReverse(l []int) {
+	var length = int(len(l) / 2)
+	for i := 0; i < length; i++ {
+		li := len(l) - i - 1
+		l[i], l[li] = l[li], l[i]
+	}
+}
+
+func GetUidByInviteCode(inviteCode uint64) (uint64, error) {
+	var addBefore uint64 = 10301
+	var addAfter uint64 = 31513
+	var shiftIndexes = []int{3}
+	var intSystem = 7
+
+	var inviteCodeAfter = inviteCode - addAfter
+	var uidStr = strconv.FormatUint(inviteCodeAfter, intSystem)
+
+	var first = uidStr[0:1]
+	uidStr = uidStr[1:]
+	SliceReverse(shiftIndexes)
+
+	for _, shiftIndex := range shiftIndexes {
+		uidStr = uidStr[len(uidStr)-shiftIndex:] + uidStr[0:len(uidStr)-shiftIndex]
+	}
+	uidStr = first + uidStr
+
+	var (
+		uid uint64
+		err error
+	)
+	if uid, err = strconv.ParseUint(uidStr, intSystem, 64); err != nil {
+		return 0, err
+	}
+
+	uid = uid - addBefore
+
+	return uid, nil
+}
+
+func f16() {
+	fmt.Println(String(debug.Stack()))
 }
 
 func f15() {
