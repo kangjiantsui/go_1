@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -13,7 +14,31 @@ import (
 )
 
 func main() {
-	f17()
+	f18()
+}
+
+func f19() {
+	time.Sleep(time.Second * 2)
+	fmt.Printf("%v,请求\n", time.Now())
+}
+
+func f18() {
+	fmt.Printf("%v,开始\n", time.Now())
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*4)
+	defer cancel()
+	go func(ctx context.Context) {
+		f19()
+		cancel()
+	}(ctx)
+
+	select {
+	case <-ctx.Done():
+		fmt.Printf("%v,成功\n", time.Now())
+		return
+	case <-time.After(time.Second * 3):
+		fmt.Printf("%v,超时\n", time.Now())
+		return
+	}
 }
 
 func f17() {
