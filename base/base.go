@@ -14,7 +14,12 @@ import (
 )
 
 func main() {
-	f18()
+	f20()
+}
+
+func f20() {
+	aaa := "哈哈1111"
+	fmt.Println(len([]rune(aaa)))
 }
 
 func f19() {

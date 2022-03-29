@@ -1,16 +1,5 @@
-{
-  "app_id": 258811,
-  "cp_order_id": "20220318011331504675256315420672",
-  "status": 2,
-  "amount": 1,
-  "actual_amount": 1,
-  "coupon_amount": 0,
-  "product_id": 10005,
-  "product_name": "15宝石",
-  "extra_info": "",
-  "order_extra_info": "{\"order_id\": \"7076291468897491724\",\"union_mode\": 1}",
-  "create_time": 1647577512,
-  "pay_time": 1647577579,
-  "log_id": "20220312261801013515515410CB3560",
-  "sign": "sz7yIfhn/6Q96R5fzbJPO7xnack="
-}
+IDFA：0624BE2A-B8A0-47BD-89F0-0B1310A1282C
+请求网址：https://sp7.sagigame.cn:10111/v2/integralwall/qimai/clickidfa?idfa=0624BE2A-B8A0-47BD-89F0-0B1310A1282C&channel=qimai&callback=http%3A%2F%2Fcallback.pphongbao.com%2Findex.php%2FthirdCallback%2FactiveInfo%3Fidfa%3D0624BE2A-B8A0-47BD-89F0-0B1310A1282C%26appid%3D1504860311%26fastid%3D4358101%26isThirdCallback%3D0%26sign%3D28620443778335582e0a24d4fd64d9a6
+接口返回：{"result":1,"error":"成功"}
+错误代码：200
+请求时长：0秒
