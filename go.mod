@@ -6,6 +6,7 @@ require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1 // indirect
 	github.com/antlinker/go-cmap v0.0.0-20160407022646-0c5e57012e96 // indirect
 	github.com/antlinker/go-dirtyfilter v1.2.0
+	github.com/bitleak/lmstfy v1.0.11
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/golang/protobuf v1.5.2
