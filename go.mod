@@ -18,6 +18,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/stretchr/testify v1.7.1
 	github.com/tealeg/xlsx v1.0.5 // indirect
+	github.com/tsliwowicz/go-wrk v0.0.0-20210628064207-cc6865c14ec7 // indirect
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/xuri/excelize/v2 v2.5.0
 	go.mongodb.org/mongo-driver v1.5.1
